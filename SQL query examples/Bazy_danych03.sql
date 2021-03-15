@@ -6,9 +6,15 @@
         group by kod_stanowiska;
 		
         różnica pomiędzy najwyższą a najniższą płacą podstawową na każdym stanowisku,
-        
+        SELECT kod_stanowiska, max(placa_podstawowa) - min(placa_podstawowa)
+	from firma.pracownicy
+	group by kod_stanowiska
+	
         suma wypłat miesięcznych dla kobiet,
-        
+        SELECT sum(placa_podstawowa+placa_dodatkowa(is not null) as "placa miesięczna")
+	from firma.pracownicy
+	where lower plec='k'
+	
         średnia płaca podstawowa dla kobiet i mężczyzn w każdym wydziale,
         select kod_wydzialu, plec, avg(placa_podstawowa)
 		from firma.pracownicy
@@ -21,9 +27,14 @@
 		order by miesiac asc
 		
         wiek pracowników (w latach),
-        
+        select sum(2020+(-extract(year from data_urodzenia))) as "wiek w latach"
+	from firma.pracownicy
+				  
         średnia płaca podstawowa dla osób z tym samym wykształceniem,
-        
+        select avg(placa_podstawowa) 
+				  from firma.pracownicy
+				  group by kod_wyksztalcenia
+				  
         kody stanowisk, na których średnia płaca podstawowa wynosi 3000 zł lub więcej,
         select kod_stanowiska, avg(placa_podstawowa)
 		from firma.pracownicy
